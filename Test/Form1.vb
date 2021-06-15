@@ -13,9 +13,6 @@ Public Class Form1
         My.Settings.ConsumerSecret = ConsumerSecretTB.Text
     End Sub
 
-
-
-
     Private Sub SetupForm()
 
         'ComboBoxes
