@@ -14,6 +14,8 @@ Public Class Form1
     End Sub
 
 
+
+
     Private Sub SetupForm()
 
         'ComboBoxes
@@ -26,16 +28,6 @@ Public Class Form1
         ConsumerSecretTB.Text = My.Settings.ConsumerSecret
 
     End Sub
-
-    'Private Sub Button1_Click(sender As Object, e As EventArgs)
-
-    '    Dim ApiInterface As New LicenseManagerApiInterface("https://omnigamez.com",
-    '                                                "ck_e267ba742205984464ccc9c566ae6f15fe949609",
-    '                                                "cs_3d9e4eb833aabbdabbe694e3767f2ad5e75d89cc")
-
-    'End Sub
-
-
 
     Private Sub LicenseOperationGoBT_Click(sender As Object, e As EventArgs) Handles LicenseOperationGoBT.Click
 
