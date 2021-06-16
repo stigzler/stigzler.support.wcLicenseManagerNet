@@ -102,7 +102,7 @@ End If
 ```
 
 ## Test Application
-The full Visual Studio project is in this repo. If you download it, you'll also find an app called
+The full Visual Studio solution is in this repo. If you download it, you'll also find an app called API Tester. This is useful for experimenting with your LicenseManager API and getting used to the various requests.
 
 ![Screenshot](/../master/Test/APITester.png?raw=true)
 
