@@ -136,6 +136,7 @@ Public Class APITester
         OperationOutcomeLB.Text = response.ProcessOutcome.ToString
         ApiResponseLB.Text = response.APIReturnedSuccess.ToString
         JsonStringRTB.Text = response.APIJsonString
+        PropGridObjectTypeToggleBT.Checked = False ' linked event switches to license in prop grid - done here to prevent it overwriting with blank
         ObjectsDGV.DataSource = response.Licences
 
         For Each col As DataGridViewColumn In ObjectsDGV.Columns
@@ -168,14 +169,13 @@ Public Class APITester
 
         If TypeOf (ObjectsDGV.SelectedRows(0).DataBoundItem) Is License Then
             PropertyGrid.SelectedObject = ObjectsDGV.SelectedRows(0).DataBoundItem
-            PropGridObjectTypeToggleBT.Checked = False
             If LicenseOperationCB.SelectedValue <> LicenseRequestType.Validate Then
                 LicenseKeyTB.Text = DirectCast(ObjectsDGV.SelectedRows(0).DataBoundItem, License).LicenseKey
             End If
 
-        Else
-
-
+        ElseIf TypeOf (ObjectsDGV.SelectedRows(0).DataBoundItem) Is generator Then
+            PropertyGrid.SelectedObject = ObjectsDGV.SelectedRows(0).DataBoundItem
+            GeneratorIdTB.Text = DirectCast(ObjectsDGV.SelectedRows(0).DataBoundItem, Generator).ID
         End If
 
 
@@ -222,5 +222,58 @@ Public Class APITester
         End If
     End Sub
 
+    Private Sub GeneratorOperationGoBT_Click(sender As Object, e As EventArgs) Handles GeneratorOperationGoBT.Click
+        Cursor = Cursors.WaitCursor
 
+        Dim apiInterface As New LicenseManagerApiInterface(BaseUrlTB.Text, ConsumerKeyTB.Text, ConsumerSecretTB.Text)
+        With apiInterface
+            .WebClientTimeout = 5000
+        End With
+        Dim response As GeneratorRequestOutcome = Nothing
+
+        Select Case GeneratorOperationCB.SelectedItem
+            Case GeneratorRequestType.List
+                response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem)
+
+            Case GeneratorRequestType.Retrieve
+                response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem, GeneratorIdTB.Text)
+
+            Case GeneratorRequestType.Update, GeneratorRequestType.Create
+                If TypeOf (PropertyGrid.SelectedObject) IsNot Generator Then
+                    MsgBox("Please send a Generator with this operation via the Property Grid to the right (which is not currently a Generator).")
+                    Return
+                End If
+                response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem, GeneratorIdTB.Text, PropertyGrid.SelectedObject) ' this will be the license object in the property grid
+
+        End Select
+
+        OperationOutcomeLB.Text = response.ProcessOutcome.ToString
+        ApiResponseLB.Text = response.APIReturnedSuccess.ToString
+        JsonStringRTB.Text = response.APIJsonString
+        PropGridObjectTypeToggleBT.Checked = True ' linked event switches to generator in prop grid - done here to prevent it overwriting with blank
+        ObjectsDGV.DataSource = response.Generators
+
+        For Each col As DataGridViewColumn In ObjectsDGV.Columns
+            If col.Name <> "Name" Then
+                col.Visible = False
+            Else
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            End If
+        Next
+
+
+        If response.ProcessOutcome = ProcessOutcome.WebClientError Then
+            PropertyGrid.SelectedObject = response.WebClientException
+            TabControl1.SelectedTab = TabControl1.TabPages(1)
+        Else
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+        End If
+
+        If response.Generators IsNot Nothing AndAlso response.Generators.Count > 0 Then ObjectsDGV.Rows(0).Selected = True
+
+        Cursor = Cursors.Default
+
+        My.Computer.Audio.PlaySystemSound(System.Media.SystemSounds.Asterisk)
+
+    End Sub
 End Class
