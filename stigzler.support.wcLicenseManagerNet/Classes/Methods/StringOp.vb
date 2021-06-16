@@ -1,6 +1,6 @@
 ﻿Imports Newtonsoft.Json.Linq
 
-Public Class StringOp
+Class StringOp
 
     Public Shared Function UrlCombine(ByVal baseUrl As String, ParamArray segments As String()) As String
         Return String.Join("/", {baseUrl.TrimEnd("/"c)}.Concat(segments.[Select](Function(s) s.Trim("/"c))))

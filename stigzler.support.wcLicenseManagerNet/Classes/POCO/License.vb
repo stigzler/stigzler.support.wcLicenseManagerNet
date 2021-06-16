@@ -1,5 +1,8 @@
 ﻿Imports System.ComponentModel
 
+''' <summary>
+''' An object representing the License Manager license
+''' </summary>
 Public Class License
     Public Property ID As Int64?
     Public Property OrderID As Int64?
@@ -9,6 +12,9 @@ Public Class License
     Public Property ValidFor As Int32?
     Public Property Source As String
 
+    ''' <summary>
+    ''' Integer representation of the status. See LicenceManagerApiInterface.LicenseStatusMap for mappings of the integer to status type.
+    ''' </summary>
     <Description("(1) Sold  (2) Delivered  (3) Active  (4) Inactive")>
     Public Property Status As Integer?
     Public Property TimesActivated As Integer?

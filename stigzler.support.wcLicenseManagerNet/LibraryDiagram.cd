@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="stigzler.support.wcLicenseManagerNet.License">
+    <Position X="2.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>GCAgEBAEAgAAjAAAAKAAAAEAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Classes\POCO\License.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="stigzler.support.wcLicenseManagerNet.Generator">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAEEAAAAAAiAAAACAAAAQCAAAAARAAACAAAAAAAAM=</HashCode>
+      <FileName>Classes\POCO\Generator.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="stigzler.support.wcLicenseManagerNet.LicenseManagerApiInterface">
+    <Position X="6" Y="0.5" Width="4" />
+    <NestedTypes>
+      <Class Name="stigzler.support.wcLicenseManagerNet.LicenseManagerApiInterface.LicenseResponseSingle" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Classes\Methods\LicenseManagerApiInterface.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="stigzler.support.wcLicenseManagerNet.LicenseManagerApiInterface.LicenseResponseCollection" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Classes\Methods\LicenseManagerApiInterface.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAgAgAQQCoAAAAAAAIAoAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Classes\Methods\LicenseManagerApiInterface.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="stigzler.support.wcLicenseManagerNet.LicenseRequestOutcome">
+    <Position X="10.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAQAAEAAAgAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Classes\POCO\LicenceRequestOutcome.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="stigzler.support.wcLicenseManagerNet.ProcessOutcome">
+    <Position X="13.25" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAABAgAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Classes\Enums\ProcessOutcome.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="stigzler.support.wcLicenseManagerNet.LicenseRequestType">
+    <Position X="10.75" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAADAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAI=</HashCode>
+      <FileName>Classes\Enums\LicenseRequestType.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9.75" />
+</ClassDiagram>

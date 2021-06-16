@@ -2,6 +2,9 @@
 Imports System.Collections.Generic
 Imports System.Runtime.Serialization.Json
 Imports Newtonsoft.Json
+''' <summary>
+''' The main method for making requests of the License Manager API. The base URL (e.g. https://mysite.com) and API Keys must be provided at instantiation.
+''' </summary>
 Public Class LicenseManagerApiInterface
 
 #Region "Properties"
@@ -35,6 +38,10 @@ Public Class LicenseManagerApiInterface
                                 {"ID", "id"}
                             }}
                             }
+    ''' <summary>
+    ''' A dictionary containing the relevant url segments to add to the base url to make the resource path.
+    ''' </summary>
+    ''' <remarks>Allows editing to accommodate future changes to the API</remarks>
     Public Property LicenseEndpointsMap() As Dictionary(Of LicenseRequestType, String)
         Get
             Return _licenseEndpointsMap
@@ -44,6 +51,10 @@ Public Class LicenseManagerApiInterface
         End Set
     End Property
 
+    ''' <summary>
+    ''' Maps the various License status to its Integer representation.
+    ''' </summary>
+    ''' <remarks>Allows editing to accommodate future changes to the API</remarks>
     Public Property LicenseStatusMap() As Dictionary(Of Integer, String)
         Get
             Return _licenseStatusMap
@@ -53,6 +64,10 @@ Public Class LicenseManagerApiInterface
         End Set
     End Property
 
+    ''' <summary>
+    ''' Maps the License property names to the License Manager internal databse field names.
+    ''' </summary>
+    ''' <remarks>Used in Update and Create routines. Allows editing to accommodate future changes to the API</remarks>
     Public Property PropertyToDatabaseMap() As Dictionary(Of Type, Dictionary(Of String, String))
         Get
             Return _propertyToDatabaseMap
@@ -63,6 +78,9 @@ Public Class LicenseManagerApiInterface
     End Property
 
 
+    ''' <summary>
+    ''' (Optional) Sets the timeout for the http request (in ms). Default = 100s
+    ''' </summary>
     Public Property WebClientTimeout As Integer
 
 #End Region
@@ -71,6 +89,9 @@ Public Class LicenseManagerApiInterface
     Private _consumerKey As String
     Private _consumerSecret As String
 
+    ''' <param name="BaseSiteURL">The base URL (e.g. https://MySite.com)</param>
+    ''' <param name="ConsumerKey">The Consumer Key of the API (gained in plugin settings)</param>
+    ''' <param name="ConsumerSecret">The Consumer Secret of the API (gained in plugin settings)</param>
     Public Sub New(BaseSiteURL As String, ConsumerKey As String, ConsumerSecret As String)
 
         _baseSiteURL = BaseSiteURL
@@ -79,7 +100,15 @@ Public Class LicenseManagerApiInterface
 
     End Sub
 
-    Public Function LicenseRequest(RequestType As LicenseRequestType, Optional LicenseKey As String = Nothing, Optional LicenseChanges As License = Nothing) As LicenseRequestOutcome
+    ''' <summary>
+    ''' This makes License Requests of the API. Depending on the Request type, you will need to provide different parameters. Update and Create require you to pass a Licence object  - null properties are ignored in Update.
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' <param name="RequestType">The type of License Request you wish to make</param>
+    ''' <param name="LicenseKey">The License Key of the Licence (required for Retrieve, Update, Activate, Deactivate and Validate)</param>
+    ''' <param name="License">A License object used in Update and Create</param>
+    ''' <returns>LicenseRequestOutcome object</returns>
+    Public Function LicenseRequest(RequestType As LicenseRequestType, Optional LicenseKey As String = Nothing, Optional License As License = Nothing) As LicenseRequestOutcome
 
         Dim wcp As New WebClientProcessor(_consumerKey, _consumerSecret)
         wcp.WebClientTimeout = WebClientTimeout
@@ -132,7 +161,7 @@ Public Class LicenseManagerApiInterface
             Case LicenseRequestType.Update, LicenseRequestType.Create
                 If LicenseKey Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenseKeyNotPassedError
-                ElseIf LicenseChanges Is Nothing Then
+                ElseIf License Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
                 Else
 
@@ -144,9 +173,9 @@ Public Class LicenseManagerApiInterface
                             .NullValueHandling = NullValueHandling.Ignore,
                             .ContractResolver = New DynamicMappingResolver(_propertyToDatabaseMap)}
 
-                    Dim requestBody As String = JsonConvert.SerializeObject(LicenseChanges, serializeSettings)
+                    Dim requestBody As String = JsonConvert.SerializeObject(License, serializeSettings)
 
-                    If LicenseChanges.Status IsNot Nothing Then
+                    If License.Status IsNot Nothing Then
                         requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value))
                     End If
 

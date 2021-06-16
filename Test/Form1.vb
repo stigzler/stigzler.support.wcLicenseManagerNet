@@ -6,6 +6,8 @@ Public Class Form1
         SetupForm()
 
 
+
+
     End Sub
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         My.Settings.BaseUrl = BaseUrlTB.Text
@@ -29,6 +31,8 @@ Public Class Form1
     Private Sub LicenseOperationGoBT_Click(sender As Object, e As EventArgs) Handles LicenseOperationGoBT.Click
 
         Cursor = Cursors.WaitCursor
+
+        Dim l = New LicenseRequestOutcome
 
         Dim apiInterface As New LicenseManagerApiInterface(BaseUrlTB.Text, ConsumerKeyTB.Text, ConsumerSecretTB.Text)
         With apiInterface

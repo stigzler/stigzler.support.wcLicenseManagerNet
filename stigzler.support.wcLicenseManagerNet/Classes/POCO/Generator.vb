@@ -1,4 +1,7 @@
-﻿Public Class Generator
+﻿''' <summary>
+''' An object representing the License Manager generator
+''' </summary>
+Public Class Generator
     Public Property ID As Int64?
     Public Property Name As String
     Public Property Charset As String

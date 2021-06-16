@@ -1,4 +1,4 @@
-﻿Public Enum HttpMethod
+﻿Enum HttpMethod
 
     [Get]
     Post

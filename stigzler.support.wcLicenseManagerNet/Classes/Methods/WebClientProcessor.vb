@@ -2,8 +2,7 @@
 Imports System.Net
 Imports System.Text
 
-
-Public Class WebClientProcessor
+Class WebClientProcessor
 
     Public Property Credentials As New NetworkCredential
     Public Property WebClientTimeout As Integer = 100000
@@ -39,7 +38,9 @@ Public Class WebClientProcessor
             Catch ex As Exception
 
                 With response
-                    .ReturnedString = New StreamReader(DirectCast(ex, WebException).Response.GetResponseStream()).ReadToEnd
+                    If response IsNot Nothing Then
+                        .ReturnedString = New StreamReader(DirectCast(ex, WebException).Response.GetResponseStream()).ReadToEnd
+                    End If
                     .Success = False
                     .Exception = ex
                 End With

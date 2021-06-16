@@ -1,6 +1,6 @@
 ﻿Imports System.Net
 
-Public Class CustomWebClient
+Class CustomWebClient
     Inherits WebClient
     Public Property WebClientTimeout = 100000 ' in ms
     Public Sub New()
