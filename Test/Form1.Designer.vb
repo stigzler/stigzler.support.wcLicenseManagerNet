@@ -58,6 +58,7 @@ Partial Class Form1
         Me.PropGridClearBT = New System.Windows.Forms.ToolStripButton()
         Me.PropGridObjectTypeToggleBT = New System.Windows.Forms.ToolStripButton()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -79,6 +80,7 @@ Partial Class Form1
         '
         'SplitContainer1.Panel1
         '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.Button1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GeneratorIdTB)
         Me.SplitContainer1.Panel1.Controls.Add(Me.LicenseKeyTB)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label10)
@@ -452,6 +454,16 @@ Partial Class Form1
         Me.PropGridObjectTypeToggleBT.Text = "ToolStripButton2"
         Me.PropGridObjectTypeToggleBT.ToolTipText = "Toggle between License and Generator"
         '
+        'Button1
+        '
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button1.Location = New System.Drawing.Point(367, 226)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(90, 23)
+        Me.Button1.TabIndex = 25
+        Me.Button1.Text = "Test"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
@@ -509,4 +521,5 @@ Partial Class Form1
     Friend WithEvents LicenseKeyTB As TextBox
     Friend WithEvents Label10 As Label
     Friend WithEvents Label11 As Label
+    Friend WithEvents Button1 As Button
 End Class

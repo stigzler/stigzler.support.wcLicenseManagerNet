@@ -36,7 +36,7 @@
   <Class Name="stigzler.support.wcLicenseManagerNet.LicenseRequestOutcome">
     <Position X="10.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAQAAEAAAgAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAQAAAAAAgAAAAAAAAABAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Classes\POCO\LicenceRequestOutcome.vb</FileName>
     </TypeIdentifier>
   </Class>

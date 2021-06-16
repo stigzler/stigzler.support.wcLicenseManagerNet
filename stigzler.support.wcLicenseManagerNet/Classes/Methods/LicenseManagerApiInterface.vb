@@ -81,7 +81,7 @@ Public Class LicenseManagerApiInterface
     ''' <summary>
     ''' (Optional) Sets the timeout for the http request (in ms). Default = 100s
     ''' </summary>
-    Public Property WebClientTimeout As Integer
+    Public Property WebClientTimeout As Integer = 100000
 
 #End Region
 
@@ -125,8 +125,8 @@ Public Class LicenseManagerApiInterface
                     lr = JsonConvert.DeserializeObject(Of LicenseResponseCollection)(wcr.ReturnedString)
                     With lro
                         .ProcessOutcome = ProcessOutcome.Success
-                        .APIReturnedJsonString = wcr.ReturnedString
-                        .APISuccessResponse = lr.Success
+                        .APIJsonString = wcr.ReturnedString
+                        .APIReturnedSuccess = lr.Success
                         .Licences = lr.Data
                     End With
                 Else
@@ -146,8 +146,8 @@ Public Class LicenseManagerApiInterface
                         lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
                         With lro
                             .ProcessOutcome = ProcessOutcome.Success
-                            .APIReturnedJsonString = wcr.ReturnedString
-                            .APISuccessResponse = lr.Success
+                            .APIJsonString = wcr.ReturnedString
+                            .APIReturnedSuccess = lr.Success
                             .Licences = New List(Of License) From {lr.Data}
                         End With
                     Else
@@ -165,19 +165,15 @@ Public Class LicenseManagerApiInterface
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
                 Else
 
-
-
-
-
                     Dim serializeSettings = New JsonSerializerSettings With {
                             .NullValueHandling = NullValueHandling.Ignore,
                             .ContractResolver = New DynamicMappingResolver(_propertyToDatabaseMap)}
 
                     Dim requestBody As String = JsonConvert.SerializeObject(License, serializeSettings)
 
-                    If License.Status IsNot Nothing Then
-                        requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value))
-                    End If
+                    ' If License.Status IsNot Nothing Then
+                    requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value))
+                    ' End If
 
                     If RequestType = LicenseRequestType.Update Then
                         wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Put, requestBody)
@@ -192,14 +188,14 @@ Public Class LicenseManagerApiInterface
                         lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
                         With lro
                             .ProcessOutcome = ProcessOutcome.Success
-                            .APIReturnedJsonString = wcr.ReturnedString
-                            .APISuccessResponse = lr.Success
+                            .APIJsonString = wcr.ReturnedString
+                            .APIReturnedSuccess = lr.Success
                             .Licences = New List(Of License) From {lr.Data}
                         End With
                     Else
                         With lro
                             .ProcessOutcome = ProcessOutcome.WebClientError
-                            .APIReturnedJsonString = wcr.ReturnedString
+                            .APIJsonString = wcr.ReturnedString
                             .WebClientException = wcr.Exception
                         End With
                     End If

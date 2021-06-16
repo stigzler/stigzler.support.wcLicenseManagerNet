@@ -38,7 +38,7 @@ Class WebClientProcessor
             Catch ex As Exception
 
                 With response
-                    If response IsNot Nothing Then
+                    If response IsNot Nothing And response.ReturnedString IsNot Nothing Then
                         .ReturnedString = New StreamReader(DirectCast(ex, WebException).Response.GetResponseStream()).ReadToEnd
                     End If
                     .Success = False
