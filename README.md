@@ -3,7 +3,7 @@
 ### a .net Library for the *License Manager for Woo Commerce* Plugin
 
 ## Overview
-wcLicenseManagerNet is a standard.net library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main object:
+wcLicenseManagerNet is a .net Standard library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main object:
 
 ```LicenseManagerApiInterface(BaseURL,ConsumerKey,ConsumerSecret)```
 
@@ -15,8 +15,9 @@ This, in turn, has two main methods to manipulate the Licenses and Generators:
 
 ```LicenseRequestType``` includes all the operations available within the API, such as Create, Validate and Activate.
 
-It also creates two data object types, `License` and `Generator` which hold the respective details retrieved from the API.
+This returns the object `LicenseRequestOutcome` which contains various properties including the outcome of the operation, any WebClient errors and any returned Json string.
 
+It also leverages two data object types, `License` and `Generator` which hold the respective details retrieved from the API and also are used in any Create or Update requests.
 
 ## Getting Started - Code Examples
 
