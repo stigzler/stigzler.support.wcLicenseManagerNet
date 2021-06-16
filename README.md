@@ -105,6 +105,10 @@ If apiInterface.LicenseRequest(LicenseRequestType.Retrieve, LicenseKey).Licences
 End If
 
 ```
+# Points of note
+* `LicenseRequestOutcome.Licenses` always returns a list of License objects, even where only a single object is expected (e.g. Retrieve). Just use the `.first` extension to get the license in these instances.
+* Create License doesn't require a new Licence key to conform to any generators. 
+* The bare minimum for license creation is a Key and Status.
 
 # Test Application
 The full Visual Studio solution is in this repo. If you download it, you'll also find an app called API Tester. This is useful for experimenting with your LicenseManager API and getting used to the various requests.
@@ -206,3 +210,5 @@ string LicenseKey = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1";
     if (apiInterface.LicenseRequest(LicenseRequestType.Retrieve, LicenseKey).Licences.First.Status == LicenseStatus.Inactive)
         Debug.WriteLine("App disabled due to license being set to inactive by licensor");
 ```
+# Post-Script
+Thanks go to the bugger who americanised the English word "licence." I've had so much fun retyping this a million times during this project. Stop appropriating language!!
