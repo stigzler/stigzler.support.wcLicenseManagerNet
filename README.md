@@ -1,6 +1,6 @@
 # wcLicenseManagerNet
 
-### a .net Library for the License Manager for Woo Commerce Plugin
+### a .net Library for the *License Manager for Woo Commerce* Plugin
 
 ## Overview
 wcLicenseManagerNet is a standard.net library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main object:
@@ -20,7 +20,7 @@ It also creates two data object types, `License` and `Generator` which hold the 
 
 ## Getting Started - Code Examples
 
-C# code [HERE](##C-Sharp-Code)
+C# code [HERE](##-C-Sharp-Code)
 
 ```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
@@ -107,9 +107,8 @@ End If
 
 |Property|Type|Function|Examples|API Link
 |-|-|-|-|-|
-|LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
+|LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
-
 
 ## C Sharp Code
 Getting started:
