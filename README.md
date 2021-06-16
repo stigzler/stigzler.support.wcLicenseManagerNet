@@ -20,7 +20,7 @@ It also creates two data object types, `License` and `Generator` which hold the 
 
 ## Getting Started - Code Examples
 
-C# code [HERE](##Yay)
+C# code [HERE](#Yay)
 
 ```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
@@ -110,7 +110,7 @@ End If
 |LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
 
-## Yay
+# Yay
 Getting started:
 ```cs
 // API CONNECT (URL, ConsumerKey, Consumer Secret)
