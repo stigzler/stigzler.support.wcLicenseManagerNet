@@ -20,7 +20,7 @@ It also creates two data object types, `License` and `Generator` which hold the 
 
 ## Getting Started - Code Examples
 
-C# code [HERE](##-C#-Code)
+C# code [HERE](##C#-Code)
 
 ```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
