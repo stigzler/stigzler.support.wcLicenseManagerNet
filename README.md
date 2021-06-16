@@ -41,7 +41,7 @@ Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseReq
 Debug.WriteLine(String.Join(vbCr, apiRequest.Licences))
 ```
 
-## Full Use Example
+## Full Use Case Example
 ```vbnet
 Dim LicenseKey As String = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1"
 
@@ -101,6 +101,9 @@ End If
 
 ```
 
+## Test Application
+The full Visual Studio project is in this repo. If you download it, you'll also find an app called
+
 ## Advanced Functions
 ### Changing Mappings
 `LicenseManagerApiInterface` has some properties that can be edited in case of future updates to the API that require updated values. These are:
@@ -131,7 +134,7 @@ if (apiInterface.LicenseRequest(LicenseRequestType.Validate, "OGZL-8DYMW-54PWP-T
 LicenseRequestOutcome apiRequest = apiInterface.LicenseRequest(LicenseRequestType.List);
 Debug.WriteLine(string.Join(Constants.vbCr, apiRequest.Licences));
 ```
-Full Use Example:
+Full Use Case Example:
 ```cs
 string LicenseKey = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1";
 

@@ -1,6 +1,6 @@
 ﻿Imports stigzler.support.wcLicenseManagerNet
 
-Public Class Form1
+Public Class APITester
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         SetupForm()
@@ -214,7 +214,7 @@ Public Class Form1
                 .Text = "Generator"
                 .Image = My.Resources.equalizer
             End With
-        ElseIf TypeOf (PropertyGrid.SelectedObject) Is exception Then
+        ElseIf TypeOf (PropertyGrid.SelectedObject) Is Exception Then
             With PropertyGridLB
                 .Text = "Exception"
                 .Image = My.Resources.exclamation_red

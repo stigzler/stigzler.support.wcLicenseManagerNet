@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Form1
+Partial Class APITester
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,8 +23,9 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(APITester))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.GeneratorIdTB = New System.Windows.Forms.TextBox()
         Me.LicenseKeyTB = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -58,7 +59,6 @@ Partial Class Form1
         Me.PropGridClearBT = New System.Windows.Forms.ToolStripButton()
         Me.PropGridObjectTypeToggleBT = New System.Windows.Forms.ToolStripButton()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -116,6 +116,16 @@ Partial Class Form1
         Me.SplitContainer1.Size = New System.Drawing.Size(946, 582)
         Me.SplitContainer1.SplitterDistance = 473
         Me.SplitContainer1.TabIndex = 1
+        '
+        'Button1
+        '
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button1.Location = New System.Drawing.Point(367, 226)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(90, 23)
+        Me.Button1.TabIndex = 25
+        Me.Button1.Text = "Test"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'GeneratorIdTB
         '
@@ -454,24 +464,14 @@ Partial Class Form1
         Me.PropGridObjectTypeToggleBT.Text = "ToolStripButton2"
         Me.PropGridObjectTypeToggleBT.ToolTipText = "Toggle between License and Generator"
         '
-        'Button1
-        '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Location = New System.Drawing.Point(367, 226)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(90, 23)
-        Me.Button1.TabIndex = 25
-        Me.Button1.Text = "Test"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Form1
+        'APITester
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(946, 582)
         Me.Controls.Add(Me.SplitContainer1)
-        Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Name = "APITester"
+        Me.Text = "API Tester"
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
