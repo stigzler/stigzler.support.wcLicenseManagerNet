@@ -106,7 +106,7 @@ End If
 `LicenseManagerApiInterface` has some properties that can be edited in case of future updates to the API that require updated values. These are:
 
 |Property|Type|Function|Examples|API Link
-|-|-|-|
+|-|-|-|-|-|
 |LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
 
