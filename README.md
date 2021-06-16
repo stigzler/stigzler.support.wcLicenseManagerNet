@@ -2,7 +2,7 @@
 
 ### a .net Library for the *License Manager for Woo Commerce* Plugin
 
-## Overview
+# Overview
 wcLicenseManagerNet is a .Net Standard library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main method:
 
 ```LicenseManagerApiInterface(BaseURL,ConsumerKey,ConsumerSecret)```
@@ -19,10 +19,10 @@ This returns the object `LicenseRequestOutcome` which contains various propertie
 
 It also leverages two data object types, `License` and `Generator` which hold the respective details retrieved from the API and also are used in any Create or Update requests.
 
-## Download
-It can be installed from NuGet via the usual means or downloaded and compiled from here. If you use nuget, it might also be advisable to download this Visual Studio Solution to use the [Test Application](##Test-Application) to experiment with the API.
+# Download
+It can be installed from NuGet via the usual means or downloaded and compiled from here. If you use nuget, it might also be advisable to download this Visual Studio Solution to use the [Test Application](#Test-Application) to experiment with the API.
 
-## Getting Started - Code Examples
+# Getting Started - Code Examples
 
 C# code [HERE](#C-Sharp-Code)
 
@@ -45,7 +45,7 @@ Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseReq
 Debug.WriteLine(String.Join(vbCr, apiRequest.Licences))
 ```
 
-## Full Use Case Example
+# Full Use Case Example
 ```vbnet
 Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc")
 Dim LicenseKey As String = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1"
@@ -106,13 +106,13 @@ End If
 
 ```
 
-## Test Application
+# Test Application
 The full Visual Studio solution is in this repo. If you download it, you'll also find an app called API Tester. This is useful for experimenting with your LicenseManager API and getting used to the various requests.
 
 ![Screenshot](/../master/Test/APITester.png?raw=true)
 
-## Advanced Functions
-### Changing Mappings
+# Advanced Functions
+## Changing Mappings
 `LicenseManagerApiInterface` has some properties that can be edited in case of future updates to the API that require updated values. These are:
 
 |Property|Type|Function|Examples|API Link
@@ -120,7 +120,7 @@ The full Visual Studio solution is in this repo. If you download it, you'll also
 |LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
 
-## Links
+# Links
 [Plugin WP Homepage](https://wordpress.org/plugins/license-manager-for-woocommerce/)
 
 [Plugin Homepage + Docs](https://www.licensemanager.at/)
