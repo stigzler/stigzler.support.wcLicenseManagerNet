@@ -29,15 +29,16 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAIAAAAgAgAQQCoAAAAAAAIAoAAAAAAAAAAAAEAAIA=</HashCode>
+      <HashCode>AAAIAAAAgAgAQwCoAAAAAAAIAoAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Classes\Methods\LicenseManagerApiInterface.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="stigzler.support.wcLicenseManagerNet.LicenseRequestOutcome">
+  <Class Name="stigzler.support.wcLicenseManagerNet.GeneratorRequestOutcome">
     <Position X="10.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQIAAAAAkAAAAAAAAABAAAAAABAAAAAAAAAA=</HashCode>
-      <FileName>Classes\POCO\LicenceRequestOutcome.vb</FileName>
+      <HashCode>AAAAAAAAQIAAgAAkAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\POCO\GeneratorRequestOutcome.vb</FileName>
+      <NewMemberFileName>Classes\POCO\LicenceRequestOutcome.vb</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="stigzler.support.wcLicenseManagerNet.ProcessOutcome">

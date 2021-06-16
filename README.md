@@ -121,8 +121,8 @@ The full Visual Studio solution is in this repo. If you download it, you'll also
 
 |Property|Type|Function|Examples|API Link
 |-|-|-|-|-|
-|LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
-|PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
+|LicenseEndpointsMap<br/>GeneratorEndpointsMap|Dictionary(Of LicenseRequestType/GeneratorRequestType, string)|License + Generator Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
+|LicensePropertyToDatabaseMap<br/>GeneratorPropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
 
 # Links
 [Plugin WP Homepage](https://wordpress.org/plugins/license-manager-for-woocommerce/)
