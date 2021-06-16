@@ -3,13 +3,23 @@
 ### a .net Library for the License Manager for Woo Commerce Plugin
 
 ## Overview
-blah
+wcLicenseManagerNet is a standard.net library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main object:
 
-## Getting Started
+```LicenseManagerApiInterface(BaseURL,ConsumerKey,ConsumerSecret)```
+
+This, in turn, has two main methods to manipulate the Licenses and Generators:
+
+```.LicenseRequest(LicenseRequestType,[LicenseKey],[License])```
+```.GeneratorRequest(GeneratorRequestType,[GeneratorID],[Generator])```
+
+```LicenseRequestType``` includes all the operations available within the API, such as Create, Validate and Activate.
+
+
+## Getting Started - Code Examples
 
 ```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
-Dim apiInterface As New LicenseManagerApiInterface("https://omnigamez.com", "ck_e267ba742205984464ccc9c566ae6f15fe949609", "cs_3d9e4eb833aabbdabbe694e3767f2ad5e75d89cc")
+Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc")
 
 ' ACTIVATE LICENSE
 apiInterface.LicenseRequest(LicenseRequestType.Activate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE")
@@ -88,3 +98,25 @@ End If
 
 ## Advanced Functions
 ### Changing Mappings
+
+## C# Code
+
+```cs
+// API CONNECT (URL, ConsumerKey, Consumer Secret)
+LicenseManagerApiInterface apiInterface = new LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc");
+
+// ACTIVATE LICENSE
+apiInterface.LicenseRequest(LicenseRequestType.Activate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE");
+
+// DEACTIVATE LICENSE
+apiInterface.LicenseRequest(LicenseRequestType.Deactivate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE");
+
+// CHECK LICENCE KEY VALID
+// Display True or False for Key validity
+if (apiInterface.LicenseRequest(LicenseRequestType.Validate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE").APIReturnedSuccess)
+    Debug.WriteLine("Valid");
+
+// LIST ALL LICENSES
+LicenseRequestOutcome apiRequest = apiInterface.LicenseRequest(LicenseRequestType.List);
+Debug.WriteLine(string.Join(Constants.vbCr, apiRequest.Licences));
+```
