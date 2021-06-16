@@ -104,6 +104,8 @@ End If
 ## Test Application
 The full Visual Studio project is in this repo. If you download it, you'll also find an app called
 
+![Screenshot](https://github.com/stigzler/stigzler.support.wcLicenseManagerNet/blob/master/Test/APITester.png)
+
 ## Advanced Functions
 ### Changing Mappings
 `LicenseManagerApiInterface` has some properties that can be edited in case of future updates to the API that require updated values. These are:
