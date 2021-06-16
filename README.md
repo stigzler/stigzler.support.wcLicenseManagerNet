@@ -104,7 +104,7 @@ End If
 ## Test Application
 The full Visual Studio project is in this repo. If you download it, you'll also find an app called
 
-![Screenshot](https://github.com/stigzler/stigzler.support.wcLicenseManagerNet/blob/master/Test/APITester.png)
+![Screenshot](/../master/Test/APITester.png?raw=true)
 
 ## Advanced Functions
 ### Changing Mappings
