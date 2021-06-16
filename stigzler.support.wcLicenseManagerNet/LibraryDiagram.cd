@@ -3,7 +3,7 @@
   <Class Name="stigzler.support.wcLicenseManagerNet.License">
     <Position X="2.25" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>GCAgEBAEAgAAjAAAAKAAAAEAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <HashCode>GCAgEBAEAgAAjAAEAKAAAAEAAAAAAAAAAAAAAAAAAAE=</HashCode>
       <FileName>Classes\POCO\License.vb</FileName>
     </TypeIdentifier>
   </Class>
@@ -29,21 +29,21 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAIAAAAgAgAQQCoAAAAAAAIAoAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAIAAAAgAgAQQCoAAAAAAAIAoAAAAAAAAAAAAEAAIA=</HashCode>
       <FileName>Classes\Methods\LicenseManagerApiInterface.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="stigzler.support.wcLicenseManagerNet.LicenseRequestOutcome">
     <Position X="10.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAQAAAAAAgAAAAAAAAABAAAAAABAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQIAAAAAkAAAAAAAAABAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Classes\POCO\LicenceRequestOutcome.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="stigzler.support.wcLicenseManagerNet.ProcessOutcome">
     <Position X="13.25" Y="0.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAAAAAAAAAAAABAgAAAAAAAAABAAAAAAA=</HashCode>
+      <HashCode>AAACAgAAAAAAAAAAAAAAAAABAgAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Classes\Enums\ProcessOutcome.vb</FileName>
     </TypeIdentifier>
   </Enum>
@@ -52,6 +52,13 @@
     <TypeIdentifier>
       <HashCode>AIQAAAAAAADAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAI=</HashCode>
       <FileName>Classes\Enums\LicenseRequestType.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="stigzler.support.wcLicenseManagerNet.LicenseStatus">
+    <Position X="13.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAABAAAAIAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Enums\LicenseStatus.vb</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9.75" />

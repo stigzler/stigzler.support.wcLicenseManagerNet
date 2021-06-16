@@ -101,7 +101,7 @@ Public Class LicenseManagerApiInterface
     End Sub
 
     ''' <summary>
-    ''' This makes License Requests of the API. Depending on the Request type, you will need to provide different parameters. Update and Create require you to pass a Licence object  - null properties are ignored in Update.
+    ''' This makes License Requests of the API. Depending on the Request type, you will need to provide different parameters. Null properties are ignored in Update.
     ''' </summary>
     ''' <remarks></remarks>
     ''' <param name="RequestType">The type of License Request you wish to make</param>
@@ -115,6 +115,10 @@ Public Class LicenseManagerApiInterface
 
         Dim wcr As New WebClientResponse
         Dim lro As New LicenseRequestOutcome
+
+        Dim mappingSettings = New JsonSerializerSettings With {
+                            .NullValueHandling = NullValueHandling.Ignore,
+                            .ContractResolver = New DynamicMappingResolver(_propertyToDatabaseMap)}
 
         Select Case RequestType
 
@@ -136,73 +140,63 @@ Public Class LicenseManagerApiInterface
                     End With
                 End If
 
-            Case LicenseRequestType.Retrieve, LicenseRequestType.Activate, LicenseRequestType.Deactivate, LicenseRequestType.Validate
+            Case LicenseRequestType.Retrieve, LicenseRequestType.Activate, LicenseRequestType.Deactivate, LicenseRequestType.Validate ' requires License
                 If LicenseKey = "" OrElse LicenseKey Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenseKeyNotPassedError
                 Else
                     wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Get)
-                    If wcr.Success Then
-                        Dim lr As New LicenseResponseSingle
-                        lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
-                        With lro
-                            .ProcessOutcome = ProcessOutcome.Success
-                            .APIJsonString = wcr.ReturnedString
-                            .APIReturnedSuccess = lr.Success
-                            .Licences = New List(Of License) From {lr.Data}
-                        End With
-                    Else
-                        With lro
-                            .ProcessOutcome = ProcessOutcome.WebClientError
-                            .WebClientException = wcr.Exception
-                        End With
-                    End If
+                    lro = ProcessWebClientResponse(wcr)
                 End If
 
-            Case LicenseRequestType.Update, LicenseRequestType.Create
-                If LicenseKey Is Nothing Then
+            Case LicenseRequestType.Update ' requires Key and License
+                If LicenseKey = "" OrElse LicenseKey Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenseKeyNotPassedError
                 ElseIf License Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
                 Else
-
-                    Dim serializeSettings = New JsonSerializerSettings With {
-                            .NullValueHandling = NullValueHandling.Ignore,
-                            .ContractResolver = New DynamicMappingResolver(_propertyToDatabaseMap)}
-
-                    Dim requestBody As String = JsonConvert.SerializeObject(License, serializeSettings)
-
-                    ' If License.Status IsNot Nothing Then
-                    requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value))
-                    ' End If
-
-                    If RequestType = LicenseRequestType.Update Then
-                        wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Put, requestBody)
-
-                    ElseIf RequestType = LicenseRequestType.Create Then
-                        wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType)), HttpMethod.Post, requestBody)
-
-                    End If
-
-                    If wcr.Success Then
-                        Dim lr As New LicenseResponseSingle
-                        lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
-                        With lro
-                            .ProcessOutcome = ProcessOutcome.Success
-                            .APIJsonString = wcr.ReturnedString
-                            .APIReturnedSuccess = lr.Success
-                            .Licences = New List(Of License) From {lr.Data}
-                        End With
-                    Else
-                        With lro
-                            .ProcessOutcome = ProcessOutcome.WebClientError
-                            .APIJsonString = wcr.ReturnedString
-                            .WebClientException = wcr.Exception
-                        End With
-                    End If
+                    Dim requestBody As String = JsonConvert.SerializeObject(License, mappingSettings) ' converts Porperty names to db names in json
+                    requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status Enum int With text (required by db)
+                    wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Put, requestBody)
+                    lro = ProcessWebClientResponse(wcr)
                 End If
-                Dim userLicense As New License With {.LicenseKey = "D780F-CD87E"}
+
+            Case LicenseRequestType.Create ' requires License
+                If License Is Nothing Then
+                    lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
+                Else
+                    Dim requestBody As String = JsonConvert.SerializeObject(License, mappingSettings) ' converts Porperty names to db names in json
+                    requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status enum int with text (required by db)
+                    wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType)), HttpMethod.Post, requestBody)
+                    lro = ProcessWebClientResponse(wcr)
+                End If
+
         End Select
 
+
+        Return lro
+
+    End Function
+
+    Private Function ProcessWebClientResponse(wcr As WebClientResponse) As LicenseRequestOutcome
+
+        Dim lro As New LicenseRequestOutcome
+
+        If wcr.Success Then
+            Dim lr As New LicenseResponseSingle
+            lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
+            With lro
+                .ProcessOutcome = ProcessOutcome.Success
+                .APIJsonString = wcr.ReturnedString
+                .APIReturnedSuccess = lr.Success
+                .Licences = New List(Of License) From {lr.Data}
+            End With
+        Else
+            With lro
+                .ProcessOutcome = ProcessOutcome.WebClientError
+                .APIJsonString = wcr.ReturnedString
+                .WebClientException = wcr.Exception
+            End With
+        End If
 
         Return lro
 
