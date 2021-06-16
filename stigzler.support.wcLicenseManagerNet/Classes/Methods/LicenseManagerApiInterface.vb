@@ -5,14 +5,10 @@ Imports Newtonsoft.Json
 Public Class LicenseManagerApiInterface
 
 #Region "Properties"
-    Private _baseSiteURL As String
-    Private _consumerKey As String
-    Private _consumerSecret As String
 
+    Private _licenseStatusMap As New Dictionary(Of Integer, String) From {{1, "sold"}, {2, "delivered"}, {3, "active"}, {4, "inactive"}}
 
-    Public Property WebClientTimeout As Integer
-
-    Private _licenseEndpoints As New Dictionary(Of LicenseRequestType, String) From {{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"},
+    Private _licenseEndpointsMap As New Dictionary(Of LicenseRequestType, String) From {{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"},
                                                                                      {LicenseRequestType.Retrieve, "/wp-json/lmfwc/v2/licenses/"},
                                                                                      {LicenseRequestType.Activate, "/wp-json/lmfwc/v2/licenses/activate/"},
                                                                                      {LicenseRequestType.Deactivate, "/wp-json/lmfwc/v2/licenses/deactivate"},
@@ -20,18 +16,61 @@ Public Class LicenseManagerApiInterface
                                                                                      {LicenseRequestType.Create, "/wp-json/lmfwc/v2/licenses"},
                                                                                      {LicenseRequestType.Update, "/wp-json/lmfwc/v2/licenses/"}
                                                                                      }
-    Public Property LicenseEndpoints() As Dictionary(Of LicenseRequestType, String)
+
+    Private _propertyToDatabaseMap As New Dictionary(Of Type, Dictionary(Of String, String)) From {
+                            {GetType(License), New Dictionary(Of String, String) From {
+                                {"LicenseKey", "license_key"},
+                                {"ValidFor", "valid_for"},
+                                {"OrderID", "order_id"},
+                                {"ProductID", "product_id"},
+                                {"ExpiresAt", "expires_at"},
+                                {"TimesActivated", "times_activated"},
+                                {"TimesActivatedMax", "times_activated_max"},
+                                {"CreatedAt", "created_at"},
+                                {"CreatedBy", "created_by"},
+                                {"UpdatedAt", "updated_at"},
+                                {"UpdatedBy", "updated_by"},
+                                {"Source", "source"},
+                                {"Status", "status"},
+                                {"ID", "id"}
+                            }}
+                            }
+    Public Property LicenseEndpointsMap() As Dictionary(Of LicenseRequestType, String)
         Get
-            Return _licenseEndpoints
+            Return _licenseEndpointsMap
         End Get
         Set(ByVal value As Dictionary(Of LicenseRequestType, String))
-            _licenseEndpoints = value
+            _licenseEndpointsMap = value
+        End Set
+    End Property
+
+    Public Property LicenseStatusMap() As Dictionary(Of Integer, String)
+        Get
+            Return _licenseStatusMap
+        End Get
+        Set(ByVal value As Dictionary(Of Integer, String))
+            _licenseStatusMap = value
+        End Set
+    End Property
+
+    Public Property PropertyToDatabaseMap() As Dictionary(Of Type, Dictionary(Of String, String))
+        Get
+            Return _propertyToDatabaseMap
+        End Get
+        Set(ByVal value As Dictionary(Of Type, Dictionary(Of String, String)))
+            _propertyToDatabaseMap = value
         End Set
     End Property
 
 
+    Public Property WebClientTimeout As Integer
 
 #End Region
+
+    Private _baseSiteURL As String
+    Private _consumerKey As String
+    Private _consumerSecret As String
+
     Public Sub New(BaseSiteURL As String, ConsumerKey As String, ConsumerSecret As String)
 
         _baseSiteURL = BaseSiteURL
@@ -51,7 +90,7 @@ Public Class LicenseManagerApiInterface
         Select Case RequestType
 
             Case LicenseRequestType.List
-                wcr = wcp.HttpAction(UrlCombine(_baseSiteURL, _licenseEndpoints(RequestType)), HttpMethod.Get)
+                wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType)), HttpMethod.Get)
                 If wcr.Success Then
                     Dim lr As New LicenseResponseCollection
                     lr = JsonConvert.DeserializeObject(Of LicenseResponseCollection)(wcr.ReturnedString)
@@ -72,7 +111,7 @@ Public Class LicenseManagerApiInterface
                 If LicenseKey = "" OrElse LicenseKey Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenseKeyNotPassedError
                 Else
-                    wcr = wcp.HttpAction(UrlCombine(_baseSiteURL, _licenseEndpoints(RequestType), LicenseKey), HttpMethod.Get)
+                    wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Get)
                     If wcr.Success Then
                         Dim lr As New LicenseResponseSingle
                         lr = JsonConvert.DeserializeObject(Of LicenseResponseSingle)(wcr.ReturnedString)
@@ -96,12 +135,27 @@ Public Class LicenseManagerApiInterface
                 ElseIf LicenseChanges Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
                 Else
-                    Dim requestBody As String = JsonConvert.SerializeObject(LicenseChanges, New JsonSerializerSettings With {.NullValueHandling = NullValueHandling.Ignore})
+
+
+
+
+
+                    Dim serializeSettings = New JsonSerializerSettings With {
+                            .NullValueHandling = NullValueHandling.Ignore,
+                            .ContractResolver = New DynamicMappingResolver(_propertyToDatabaseMap)}
+
+                    Dim requestBody As String = JsonConvert.SerializeObject(LicenseChanges, serializeSettings)
+
+                    If LicenseChanges.Status IsNot Nothing Then
+                        requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value))
+                    End If
 
                     If RequestType = LicenseRequestType.Update Then
-                        wcr = wcp.HttpAction(UrlCombine(_baseSiteURL, _licenseEndpoints(RequestType), LicenseKey), HttpMethod.Put, requestBody)
+                        wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Put, requestBody)
+
                     ElseIf RequestType = LicenseRequestType.Create Then
-                        wcr = wcp.HttpAction(UrlCombine(_baseSiteURL, _licenseEndpoints(RequestType)), HttpMethod.Post, requestBody)
+                        wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType)), HttpMethod.Post, requestBody)
+
                     End If
 
                     If wcr.Success Then
@@ -135,9 +189,7 @@ Public Class LicenseManagerApiInterface
 
     End Function
 
-    Public Function UrlCombine(ByVal baseUrl As String, ParamArray segments As String()) As String
-        Return String.Join("/", {baseUrl.TrimEnd("/"c)}.Concat(segments.[Select](Function(s) s.Trim("/"c))))
-    End Function
+
 
 
     Private Class LicenseResponseSingle

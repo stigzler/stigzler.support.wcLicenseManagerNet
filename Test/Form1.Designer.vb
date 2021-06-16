@@ -233,11 +233,13 @@ Partial Class Form1
         '
         'ObjectsDGV
         '
+        Me.ObjectsDGV.AllowUserToResizeRows = False
         Me.ObjectsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.ObjectsDGV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ObjectsDGV.Location = New System.Drawing.Point(3, 3)
         Me.ObjectsDGV.Name = "ObjectsDGV"
         Me.ObjectsDGV.ReadOnly = True
+        Me.ObjectsDGV.RowHeadersVisible = False
         Me.ObjectsDGV.RowTemplate.Height = 25
         Me.ObjectsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.ObjectsDGV.Size = New System.Drawing.Size(445, 221)

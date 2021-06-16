@@ -1,9 +1,9 @@
 ﻿Imports System.ComponentModel
 
 Public Class License
-    Public Property id As Int64?
-    Public Property orderID As Int64?
-    Public Property productID As Int64?
+    Public Property ID As Int64?
+    Public Property OrderID As Int64?
+    Public Property ProductID As Int64?
     Public Property LicenseKey As String
     Public Property ExpiresAt As DateTime?
     Public Property ValidFor As Int32?

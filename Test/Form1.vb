@@ -56,6 +56,16 @@ Public Class Form1
         ApiResponseLB.Text = response.APISuccessResponse.ToString
         JsonStringRTB.Text = response.APIReturnedJsonString
         ObjectsDGV.DataSource = response.Licences
+
+        For Each col As DataGridViewColumn In ObjectsDGV.Columns
+            If col.Name <> "LicenseKey" Then
+                col.Visible = False
+            Else
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            End If
+        Next
+
+
         If response.ProcessOutcome = ProcessOutcome.WebClientError Then
             PropertyGrid.SelectedObject = response.WebClientException
             TabControl1.SelectedTab = TabControl1.TabPages(1)
