@@ -3,7 +3,7 @@
 ### a .net Library for the *License Manager for Woo Commerce* Plugin
 
 ## Overview
-wcLicenseManagerNet is a .net Standard library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main object:
+wcLicenseManagerNet is a .Net Standard library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main method:
 
 ```LicenseManagerApiInterface(BaseURL,ConsumerKey,ConsumerSecret)```
 
@@ -13,11 +13,14 @@ This, in turn, has two main methods to manipulate the Licenses and Generators:
 
 ```.GeneratorRequest(GeneratorRequestType,[GeneratorID],[Generator])```
 
-```LicenseRequestType``` includes all the operations available within the API, such as Create, Validate and Activate.
+```LicenseRequestType``` (and its Generator equivalent) includes all the operations available within the API, such as Create, Validate and Activate.
 
 This returns the object `LicenseRequestOutcome` which contains various properties including the outcome of the operation, any WebClient errors and any returned Json string.
 
 It also leverages two data object types, `License` and `Generator` which hold the respective details retrieved from the API and also are used in any Create or Update requests.
+
+## Download
+It can be installed from NuGet via the usual means or downloaded and compiled from here. If you use nuget, it might also be advisable to download this Visual Studio Solution to use the [Test Application](##Test-Application) to experiment with the API.
 
 ## Getting Started - Code Examples
 
@@ -44,6 +47,7 @@ Debug.WriteLine(String.Join(vbCr, apiRequest.Licences))
 
 ## Full Use Case Example
 ```vbnet
+Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc")
 Dim LicenseKey As String = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1"
 
 ' CREATE A NEW LICENSE (to be sold)
@@ -116,6 +120,13 @@ The full Visual Studio solution is in this repo. If you download it, you'll also
 |LicenseEndpointsMap|Dictionary(Of LicenseRequestType,string)|License Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |PropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
 
+## Links
+[Plugin WP Homepage](https://wordpress.org/plugins/license-manager-for-woocommerce/)
+
+[Plugin Homepage + Docs](https://www.licensemanager.at/)
+
+[Plugin Github](https://github.com/drazenbebic/license-manager-for-woocommerce)
+
 # C Sharp Code
 Getting started:
 ```cs
@@ -139,6 +150,7 @@ Debug.WriteLine(string.Join(Constants.vbCr, apiRequest.Licences));
 ```
 Full Use Case Example:
 ```cs
+LicenseManagerApiInterface apiInterface = new LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc");
 string LicenseKey = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1";
 
     // CREATE A NEW LICENSE (to be sold)
