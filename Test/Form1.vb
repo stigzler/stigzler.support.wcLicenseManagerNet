@@ -69,8 +69,6 @@ Public Class Form1
             Debug.WriteLine(apiRequest.ToString) ' this prints out any errors
         End If
 
-
-        apiInterface.LicenseRequest()
         ' VALIDATE THE LICENCE KEY,  ACTIVATE IF NOT AT MAXIMUM ACTIVATIONS AND SET STATUS TO ACTIVE (app's online activation)
         apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Validate, LicenseKey)
         If apiRequest.APIReturnedSuccess = True Then
