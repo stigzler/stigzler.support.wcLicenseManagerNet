@@ -8,7 +8,7 @@ blah
 ## Use Examples
 ### Simple
 
-```cs
+```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
 Dim apiInterface As New LicenseManagerApiInterface("https://omnigamez.com", "ck_e267ba742205984464ccc9c566ae6f15fe949609", "cs_3d9e4eb833aabbdabbe694e3767f2ad5e75d89cc")
 
