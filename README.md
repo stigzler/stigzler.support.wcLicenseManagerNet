@@ -20,6 +20,8 @@ It also creates two data object types, `License` and `Generator` which hold the 
 
 ## Getting Started - Code Examples
 
+C# code [HERE](##-C#-Code)
+
 ```vbnet
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
 Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc")
