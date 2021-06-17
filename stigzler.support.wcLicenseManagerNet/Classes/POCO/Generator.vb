@@ -16,5 +16,9 @@ Public Class Generator
     Public Property CreatedBy As Int64?
     Public Property UpdatedAt As DateTime?
     Public Property UpdatedBy As Int64?
+    Public Overrides Function ToString() As String
+        Return "Name: " & Name & " | Charset: " & Charset & " | Chunks: " & Chunks & " | Chunk Length: " & ChunkLength & " | Separator: " & Separator & " | Activation Max: " & TimesActivatedMax & " | Expires in: " & ExpiresIn
+    End Function
+
 
 End Class
