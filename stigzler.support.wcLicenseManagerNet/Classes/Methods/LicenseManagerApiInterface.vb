@@ -1,6 +1,6 @@
 ﻿Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
-Imports System.Text.Json
+
 ''' <summary>
 ''' The main method for making requests of the License Manager API. The base URL (e.g. https://mysite.com) and API Keys must be provided at instantiation.
 ''' </summary>
