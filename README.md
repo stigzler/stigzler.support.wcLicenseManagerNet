@@ -32,7 +32,7 @@ Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e26
 
 ' LIST ALL LICENSES
 Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseRequestType.List)
-Console.WriteLine(String.Join(vbCr, apiRequest.Licences))
+Console.WriteLine(String.Join(Environment.NewLine, apiRequest.Licences))
 
 ' ACTIVATE LICENSE
 apiInterface.LicenseRequest(LicenseRequestType.Activate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE")
