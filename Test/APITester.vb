@@ -1,6 +1,12 @@
-﻿Imports stigzler.support.wcLicenseManagerNet
+﻿Imports System.Net
+Imports System.Net.Sockets
+Imports Newtonsoft.Json
+Imports stigzler.support.wcLicenseManagerNet
 
 Public Class APITester
+
+    Dim AdditionalParametersDT As New DataTable
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         SetupForm()
@@ -23,90 +29,16 @@ Public Class APITester
         ConsumerKeyTB.Text = My.Settings.ConsumerKey
         ConsumerSecretTB.Text = My.Settings.ConsumerSecret
 
+        With AdditionalParametersDT
+            .Columns.Add("Name")
+            .Columns.Add("Value")
+        End With
+
+        AdditionalParametersDT.Rows.Add("GUID", Guid.NewGuid.ToString)
+
+        AdditionalParmaetersDGV.DataSource = AdditionalParametersDT
+
     End Sub
-
-    'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
-    '    ' API CONNECT (URL, ConsumerKey, Consumer Secret)
-    '    Dim apiInterface As New LicenseManagerApiInterface("https://omnigamez.com", "ck_e267ba742205984464ccc9c566ae6f15fe949609", "cs_3d9e4eb833aabbdabbe694e3767f2ad5e75d89cc")
-
-    '    ' ACTIVATE LICENSE
-    '    apiInterface.LicenseRequest(LicenseRequestType.Activate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE")
-
-    '    ' DEACTIVATE LICENSE
-    '    apiInterface.LicenseRequest(LicenseRequestType.Deactivate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE")
-
-    '    ' CHECK LICENCE KEY VALID
-    '    ' Display True or False for Key validity
-    '    If apiInterface.LicenseRequest(LicenseRequestType.Validate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE").APIReturnedSuccess Then Debug.WriteLine("Valid")
-
-    '    ' LIST ALL LICENSES
-    '    Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseRequestType.List)
-    '    Debug.WriteLine(String.Join(vbCr, apiRequest.Licences))
-
-    '    Dim a As New LicenseManagerApiInterface("", "", "")
-    '    a.LicenseRequest(LicenseRequestType.Deactivate, "",).Licences.
-
-    '    '======================================================================================================
-    '    ' REAL WORLD EXAMPLE
-    '    Dim LicenseKey As String = "OGZL-8DYMW-54PWP-THT76-7DG1Z-TEST1"
-
-    '    ' CREATE A NEW LICENSE (to be sold)
-    '    Dim newLicense As New License With {.LicenseKey = LicenseKey,
-    '                                        .Status = LicenseStatus.Inactive,
-    '                                        .TimesActivated = 0,
-    '                                        .TimesActivatedMax = 2}
-    '    apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Create, LicenseKey, newLicense)
-    '    Debug.WriteLine("License created: " & apiRequest.APIReturnedSuccess) ' true or false
-
-    '    ' RETRIEVE LICENSE AND UPDATE STATUS TO DELIVERED (key delivered to customer via email)
-    '    apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Retrieve, LicenseKey)
-    '    If apiRequest.APIReturnedSuccess Then
-    '        Dim retrievedLicense As License = apiRequest.Licences.First
-    '        retrievedLicense.Status = LicenseStatus.Delivered
-    '        apiInterface.LicenseRequest(LicenseRequestType.Update, LicenseKey, retrievedLicense)
-    '    Else
-    '        Debug.WriteLine(apiRequest.ToString) ' this prints out any errors
-    '    End If
-
-    '    ' VALIDATE THE LICENCE KEY,  ACTIVATE IF NOT AT MAXIMUM ACTIVATIONS AND SET STATUS TO ACTIVE (app's online activation)
-    '    apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Validate, LicenseKey)
-    '    If apiRequest.APIReturnedSuccess = True Then
-    '        Debug.WriteLine("License is a valid")
-
-    '        If apiRequest.Licences.First.RemainingActivations > 0 Then
-    '            apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Activate, LicenseKey)
-
-    '            If apiRequest.APIReturnedSuccess Then
-    '                Debug.WriteLine("License successfully Activated. Activations: " & apiRequest.Licences.First.TimesActivated & " of " & apiRequest.Licences.First.TimesActivatedMax)
-    '                apiRequest.Licences.First.Status = LicenseStatus.Active
-    '                apiRequest = apiInterface.LicenseRequest(LicenseRequestType.Update, LicenseKey, apiRequest.Licences.First)
-
-    '                If apiRequest.APIReturnedSuccess Then
-    '                    Debug.WriteLine("License status successfully updated to Active")
-    '                Else
-    '                    Debug.WriteLine("Error setting status: " & apiRequest.ToString)
-    '                End If
-    '            Else
-    '                Debug.WriteLine("Error activating license: " & apiRequest.ToString)
-    '            End If
-    '        Else
-    '            Debug.WriteLine("No more activations allowed on this License. Activations: " & apiRequest.Licences.First.TimesActivated & " of " & apiRequest.Licences.First.TimesActivatedMax)
-    '        End If
-    '    Else
-    '        Debug.WriteLine("Error validating license: " & apiRequest.ToString)
-    '    End If
-
-    '    ' REDUCE ACTIVATION COUNT (customer deactivates license on one machine)
-    '    apiInterface.LicenseRequest(LicenseRequestType.Deactivate, LicenseKey)
-
-    '    ' CHECK LICENSE STATUS (periodic app check that license hasn't been set to inactive by licensor)
-    '    If apiInterface.LicenseRequest(LicenseRequestType.Retrieve, LicenseKey).Licences.First.Status = LicenseStatus.Inactive Then
-    '        Debug.WriteLine("App disabled due to license being set to inactive by licensor")
-    '    End If
-
-    'End Sub
-
     Private Sub LicenseOperationGoBT_Click(sender As Object, e As EventArgs) Handles LicenseOperationGoBT.Click
 
         Cursor = Cursors.WaitCursor
@@ -116,6 +48,16 @@ Public Class APITester
             .WebClientTimeout = 5000
         End With
         Dim response As LicenseRequestOutcome = Nothing
+
+        Dim additionalParameters As String = Nothing
+        If UseAdditionalParametersChB.Checked Then
+            Dim d As New Dictionary(Of String, String)
+            For Each dr As DataRow In AdditionalParametersDT.Rows
+                d.Add(dr(0), dr(1))
+            Next
+            additionalParameters = JsonConvert.SerializeObject(d)
+        End If
+
 
         Select Case LicenseOperationCB.SelectedItem
             Case LicenseRequestType.List
@@ -129,7 +71,8 @@ Public Class APITester
                     MsgBox("Please send a License with this operation via the Property Grid to the right (which is not currently a License).")
                     Return
                 End If
-                response = apiInterface.LicenseRequest(LicenseOperationCB.SelectedItem, LicenseKeyTB.Text, PropertyGrid.SelectedObject) ' this will be the license object in the property grid
+
+                response = apiInterface.LicenseRequest(LicenseOperationCB.SelectedItem, LicenseKeyTB.Text, PropertyGrid.SelectedObject, additionalParameters) ' this will be the license object in the property grid
 
         End Select
 
@@ -173,7 +116,7 @@ Public Class APITester
                 LicenseKeyTB.Text = DirectCast(ObjectsDGV.SelectedRows(0).DataBoundItem, License).LicenseKey
             End If
 
-        ElseIf TypeOf (ObjectsDGV.SelectedRows(0).DataBoundItem) Is generator Then
+        ElseIf TypeOf (ObjectsDGV.SelectedRows(0).DataBoundItem) Is Generator Then
             PropertyGrid.SelectedObject = ObjectsDGV.SelectedRows(0).DataBoundItem
             GeneratorIdTB.Text = DirectCast(ObjectsDGV.SelectedRows(0).DataBoundItem, Generator).ID
         End If
@@ -231,6 +174,15 @@ Public Class APITester
         End With
         Dim response As GeneratorRequestOutcome = Nothing
 
+        Dim additionalParameters As String = Nothing
+        If UseAdditionalParametersChB.Checked Then
+            Dim d As New Dictionary(Of String, String)
+            For Each dr As DataRow In AdditionalParametersDT.Rows
+                d.Add(dr(0), dr(1))
+            Next
+            additionalParameters = JsonConvert.SerializeObject(d)
+        End If
+
         Select Case GeneratorOperationCB.SelectedItem
             Case GeneratorRequestType.List
                 response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem)
@@ -243,7 +195,7 @@ Public Class APITester
                     MsgBox("Please send a Generator with this operation via the Property Grid to the right (which is not currently a Generator).")
                     Return
                 End If
-                response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem, GeneratorIdTB.Text, PropertyGrid.SelectedObject) ' this will be the license object in the property grid
+                response = apiInterface.GeneratorRequest(GeneratorOperationCB.SelectedItem, GeneratorIdTB.Text, PropertyGrid.SelectedObject, additionalParameters) ' this will be the license object in the property grid
 
         End Select
 
@@ -276,4 +228,6 @@ Public Class APITester
         My.Computer.Audio.PlaySystemSound(System.Media.SystemSounds.Asterisk)
 
     End Sub
+
+
 End Class

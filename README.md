@@ -115,6 +115,10 @@ The full Visual Studio solution is in this repo. If you download it, you'll also
 
 ![Screenshot](/../master/Test/APITester.png?raw=true)
 
+# Class Diagram
+
+![Screenshot](/../master/Test/ClassDiagram.png?raw=true)
+
 # Advanced Functions
 ## Changing Mappings
 `LicenseManagerApiInterface` has some properties that can be edited in case of future updates to the API that require updated values. These are:
@@ -123,6 +127,14 @@ The full Visual Studio solution is in this repo. If you download it, you'll also
 |-|-|-|-|-|
 |LicenseEndpointsMap<br/>GeneratorEndpointsMap|Dictionary(Of LicenseRequestType/GeneratorRequestType, string)|License + Generator Endpoints: Constructs endpoint for requests|{LicenseRequestType.List, "/wp-json/lmfwc/v2/licenses/"}|[HERE](https://www.licensemanager.at/docs/rest-api/developer-documentation/list-licenses)
 |LicensePropertyToDatabaseMap<br/>GeneratorPropertyToDatabaseMap|Dictionary(Of Type, Dictionary(Of String, String))|Database fields:  maps properties to these|{"LicenseKey", "license_key"}|[HERE](https://www.licensemanager.at/docs/internal-api/database-structure/lmfwc-licenses)
+## Adding additional parameters to PUT and POST requests
+As per [this page](https://www.licensemanager.at/docs/tutorials-how-to/rest-api/validating-custom-request-data), you can add additional parameters to any requests that use PUT or POST. You can add a json string containing the additional parameters to the `LicenseRequest` and `GeneratorRequest` methods. This can be of any form and uses the [json.net Merge method](https://www.newtonsoft.com/json/help/html/MergeJson.htm) to merge the two. Code example:
+
+```
+apiInterface.LicenseRequest(LicenseRequestType.Create, "A7B4D-44C32-D333F", newLicense, additionalParametersJson)
+```
+
+Additionally, you can change the json.net settings used during this merge, by altering the `JsonMergeSettings` property of the `LicenseManagerApiInterface` instance
 
 # Links
 [Plugin WP Homepage](https://wordpress.org/plugins/license-manager-for-woocommerce/)

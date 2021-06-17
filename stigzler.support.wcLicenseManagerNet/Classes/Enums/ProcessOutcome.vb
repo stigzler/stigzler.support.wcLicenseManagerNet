@@ -23,6 +23,10 @@ Public Enum ProcessOutcome
     ''' </summary>
     GeneratorIdNotPassedError
     ''' <summary>
+    ''' The json string passed for additional parameters could not be parsed
+    ''' </summary>
+    AdditionalParametersJsonNonParsable
+    ''' <summary>
     ''' API request resulted in a WebClient Error. View this and the returned json string to discern causes.
     ''' </summary>
     ''' <remarks>A WebClientError can be thrown by the API (e.g. Retrieve License where the License Key doesn't exist) or by a http error (not connected to internet etc).</remarks>

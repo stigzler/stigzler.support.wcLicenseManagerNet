@@ -1,4 +1,5 @@
 ﻿Imports Newtonsoft.Json.Linq
+Imports Newtonsoft.Json.Schema
 
 Class StringOp
 
@@ -19,4 +20,28 @@ Class StringOp
         Return jobj.ToString
 
     End Function
+
+    Public Shared Function JsonMerge(json1 As String, json2 As String, mergeMethod As JsonMergeSettings) As String
+
+        Dim jobj1 = JObject.Parse(json1)
+        Dim jobj2 = JObject.Parse(json2)
+
+        jobj1.Merge(jobj2, mergeMethod)
+
+        Return jobj1.ToString
+
+    End Function
+
+    Public Shared Function JsonIsParsable(json As String) As Boolean
+
+        Try
+            Dim jobj As JObject = JObject.Parse(json)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+
 End Class

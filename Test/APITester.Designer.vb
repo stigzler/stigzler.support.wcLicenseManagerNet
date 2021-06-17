@@ -25,7 +25,7 @@ Partial Class APITester
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(APITester))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.UseAdditionalParametersChB = New System.Windows.Forms.CheckBox()
         Me.GeneratorIdTB = New System.Windows.Forms.TextBox()
         Me.LicenseKeyTB = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -40,6 +40,8 @@ Partial Class APITester
         Me.ObjectsDGV = New System.Windows.Forms.DataGridView()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.JsonStringRTB = New System.Windows.Forms.RichTextBox()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.AdditionalParmaetersDGV = New System.Windows.Forms.DataGridView()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -67,6 +69,8 @@ Partial Class APITester
         Me.TabPage1.SuspendLayout()
         CType(Me.ObjectsDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
+        CType(Me.AdditionalParmaetersDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -80,7 +84,7 @@ Partial Class APITester
         '
         'SplitContainer1.Panel1
         '
-        Me.SplitContainer1.Panel1.Controls.Add(Me.Button1)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.UseAdditionalParametersChB)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GeneratorIdTB)
         Me.SplitContainer1.Panel1.Controls.Add(Me.LicenseKeyTB)
         Me.SplitContainer1.Panel1.Controls.Add(Me.Label10)
@@ -117,15 +121,16 @@ Partial Class APITester
         Me.SplitContainer1.SplitterDistance = 473
         Me.SplitContainer1.TabIndex = 1
         '
-        'Button1
+        'UseAdditionalParametersChB
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Location = New System.Drawing.Point(367, 226)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(90, 23)
-        Me.Button1.TabIndex = 25
-        Me.Button1.Text = "Test"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.UseAdditionalParametersChB.AutoSize = True
+        Me.UseAdditionalParametersChB.Location = New System.Drawing.Point(136, 226)
+        Me.UseAdditionalParametersChB.Name = "UseAdditionalParametersChB"
+        Me.UseAdditionalParametersChB.Size = New System.Drawing.Size(165, 19)
+        Me.UseAdditionalParametersChB.TabIndex = 26
+        Me.UseAdditionalParametersChB.Text = "Use Additional Parameters"
+        Me.ToolTip1.SetToolTip(Me.UseAdditionalParametersChB, "Append additional parameters to request json (see github readme)")
+        Me.UseAdditionalParametersChB.UseVisualStyleBackColor = True
         '
         'GeneratorIdTB
         '
@@ -170,7 +175,7 @@ Partial Class APITester
         Me.ApiResponseLB.AutoSize = True
         Me.ApiResponseLB.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
         Me.ApiResponseLB.ForeColor = System.Drawing.Color.DarkSlateGray
-        Me.ApiResponseLB.Location = New System.Drawing.Point(136, 287)
+        Me.ApiResponseLB.Location = New System.Drawing.Point(136, 303)
         Me.ApiResponseLB.Name = "ApiResponseLB"
         Me.ApiResponseLB.Size = New System.Drawing.Size(150, 21)
         Me.ApiResponseLB.TabIndex = 20
@@ -182,7 +187,7 @@ Partial Class APITester
         Me.OperationOutcomeLB.AutoSize = True
         Me.OperationOutcomeLB.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
         Me.OperationOutcomeLB.ForeColor = System.Drawing.Color.DarkSlateGray
-        Me.OperationOutcomeLB.Location = New System.Drawing.Point(136, 258)
+        Me.OperationOutcomeLB.Location = New System.Drawing.Point(136, 274)
         Me.OperationOutcomeLB.Name = "OperationOutcomeLB"
         Me.OperationOutcomeLB.Size = New System.Drawing.Size(150, 21)
         Me.OperationOutcomeLB.TabIndex = 19
@@ -226,10 +231,11 @@ Partial Class APITester
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(9, 322)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Location = New System.Drawing.Point(9, 335)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(459, 255)
+        Me.TabControl1.Size = New System.Drawing.Size(459, 242)
         Me.TabControl1.TabIndex = 15
         '
         'TabPage1
@@ -238,7 +244,7 @@ Partial Class APITester
         Me.TabPage1.Location = New System.Drawing.Point(4, 24)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(451, 227)
+        Me.TabPage1.Size = New System.Drawing.Size(451, 214)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Objects"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -254,7 +260,7 @@ Partial Class APITester
         Me.ObjectsDGV.RowHeadersVisible = False
         Me.ObjectsDGV.RowTemplate.Height = 25
         Me.ObjectsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.ObjectsDGV.Size = New System.Drawing.Size(445, 221)
+        Me.ObjectsDGV.Size = New System.Drawing.Size(445, 208)
         Me.ObjectsDGV.TabIndex = 0
         '
         'TabPage2
@@ -263,7 +269,7 @@ Partial Class APITester
         Me.TabPage2.Location = New System.Drawing.Point(4, 24)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(10)
-        Me.TabPage2.Size = New System.Drawing.Size(451, 227)
+        Me.TabPage2.Size = New System.Drawing.Size(451, 214)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Json String"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -274,14 +280,35 @@ Partial Class APITester
         Me.JsonStringRTB.Dock = System.Windows.Forms.DockStyle.Fill
         Me.JsonStringRTB.Location = New System.Drawing.Point(10, 10)
         Me.JsonStringRTB.Name = "JsonStringRTB"
-        Me.JsonStringRTB.Size = New System.Drawing.Size(431, 207)
+        Me.JsonStringRTB.Size = New System.Drawing.Size(431, 194)
         Me.JsonStringRTB.TabIndex = 0
         Me.JsonStringRTB.Text = ""
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.AdditionalParmaetersDGV)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 24)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(451, 214)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Additional Parameters"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'AdditionalParmaetersDGV
+        '
+        Me.AdditionalParmaetersDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.AdditionalParmaetersDGV.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.AdditionalParmaetersDGV.Location = New System.Drawing.Point(3, 3)
+        Me.AdditionalParmaetersDGV.Name = "AdditionalParmaetersDGV"
+        Me.AdditionalParmaetersDGV.RowTemplate.Height = 25
+        Me.AdditionalParmaetersDGV.Size = New System.Drawing.Size(445, 208)
+        Me.AdditionalParmaetersDGV.TabIndex = 0
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(49, 290)
+        Me.Label7.Location = New System.Drawing.Point(49, 306)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(81, 15)
         Me.Label7.TabIndex = 14
@@ -291,7 +318,7 @@ Partial Class APITester
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(16, 261)
+        Me.Label6.Location = New System.Drawing.Point(16, 277)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(114, 15)
         Me.Label6.TabIndex = 12
@@ -302,7 +329,7 @@ Partial Class APITester
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point)
-        Me.Label5.Location = New System.Drawing.Point(136, 232)
+        Me.Label5.Location = New System.Drawing.Point(136, 248)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(62, 21)
         Me.Label5.TabIndex = 10
@@ -482,6 +509,8 @@ Partial Class APITester
         Me.TabPage1.ResumeLayout(False)
         CType(Me.ObjectsDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
+        Me.TabPage3.ResumeLayout(False)
+        CType(Me.AdditionalParmaetersDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.ResumeLayout(False)
@@ -521,5 +550,7 @@ Partial Class APITester
     Friend WithEvents LicenseKeyTB As TextBox
     Friend WithEvents Label10 As Label
     Friend WithEvents Label11 As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents AdditionalParmaetersDGV As DataGridView
+    Friend WithEvents UseAdditionalParametersChB As CheckBox
 End Class

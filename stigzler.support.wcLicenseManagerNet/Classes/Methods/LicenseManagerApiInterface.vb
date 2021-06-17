@@ -1,7 +1,6 @@
-﻿Imports System
-Imports System.Collections.Generic
-Imports System.Runtime.Serialization.Json
-Imports Newtonsoft.Json
+﻿Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports System.Text.Json
 ''' <summary>
 ''' The main method for making requests of the License Manager API. The base URL (e.g. https://mysite.com) and API Keys must be provided at instantiation.
 ''' </summary>
@@ -46,17 +45,17 @@ Public Class LicenseManagerApiInterface
                                 }
 
     Private _generatorPropertyToDatabaseMap As New Dictionary(Of Type, Dictionary(Of String, String)) From {
-                            {GetType(License), New Dictionary(Of String, String) From {
+                            {GetType(Generator), New Dictionary(Of String, String) From {
                                 {"ID", "id"},
                                 {"Name", "name"},
                                 {"Charset", "charset"},
                                 {"Chunks", "chunks"},
-                                {"ChunkLength", "chunk-Length"},
+                                {"ChunkLength", "chunk_length"},
                                 {"TimesActivatedMax", "times_activated_max"},
                                 {"Separator", "separator"},
                                 {"Prefix", "prefix"},
                                 {"Suffix", "suffix"},
-                                {"ExiresIn", "expires_in"},
+                                {"ExpiresIn", "expires_in"},
                                 {"CreatedAt", "created_at"},
                                 {"CreatedBy", "created_by"},
                                 {"UpdatedAt", "updated_at"},
@@ -131,6 +130,19 @@ Public Class LicenseManagerApiInterface
 
 
     ''' <summary>
+    ''' Settings used by json.net when merging License and Generator objects with additional parameters json. 
+    ''' </summary>
+    Private _jsonMergeSettings As JsonMergeSettings = New JsonMergeSettings With {.MergeArrayHandling = MergeArrayHandling.Union}
+    Public Property JsonMergeSettings() As JsonMergeSettings
+        Get
+            Return _jsonMergeSettings
+        End Get
+        Set(ByVal value As JsonMergeSettings)
+            _jsonMergeSettings = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' (Optional) Sets the timeout for the http request (in ms). Default = 100s
     ''' </summary>
     Public Property WebClientTimeout As Integer = 100000
@@ -159,8 +171,12 @@ Public Class LicenseManagerApiInterface
     ''' <param name="RequestType">The type of License Request you wish to make</param>
     ''' <param name="LicenseKey">The License Key of the Licence (required for Retrieve, Update, Activate, Deactivate and Validate)</param>
     ''' <param name="License">A License object used in Update and Create</param>
+    ''' <param name="AdditionalParametersJson">Any additional parameters to add to the json request body in Json format</param>
     ''' <returns>LicenseRequestOutcome object</returns>
-    Public Function LicenseRequest(RequestType As LicenseRequestType, Optional LicenseKey As String = Nothing, Optional License As License = Nothing) As LicenseRequestOutcome
+    Public Function LicenseRequest(RequestType As LicenseRequestType, Optional LicenseKey As String = Nothing,
+                                   Optional License As License = Nothing, Optional AdditionalParametersJson As String = Nothing) As LicenseRequestOutcome
+
+
 
         Dim wcp As New WebClientProcessor(_consumerKey, _consumerSecret)
         wcp.WebClientTimeout = WebClientTimeout
@@ -205,9 +221,14 @@ Public Class LicenseManagerApiInterface
                     lro.ProcessOutcome = ProcessOutcome.LicenseKeyNotPassedError
                 ElseIf License Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
+                ElseIf AdditionalParametersJson IsNot Nothing AndAlso Not StringOp.JsonIsParsable(AdditionalParametersJson) Then
+                    lro.ProcessOutcome = ProcessOutcome.AdditionalParametersJsonNonParsable
                 Else
                     Dim requestBody As String = JsonConvert.SerializeObject(License, mappingSettings) ' converts Porperty names to db names in json
                     requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status Enum int With text (required by db)
+                    If AdditionalParametersJson IsNot Nothing Then
+                        requestBody = StringOp.JsonMerge(requestBody, AdditionalParametersJson, _jsonMergeSettings)
+                    End If
                     wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType), LicenseKey), HttpMethod.Put, requestBody)
                     lro = ProcessLicenseWebClientResponse(wcr)
                 End If
@@ -215,9 +236,14 @@ Public Class LicenseManagerApiInterface
             Case LicenseRequestType.Create ' requires License
                 If License Is Nothing Then
                     lro.ProcessOutcome = ProcessOutcome.LicenceObjectRequiredError
+                ElseIf AdditionalParametersJson IsNot Nothing AndAlso Not StringOp.JsonIsParsable(AdditionalParametersJson) Then
+                    lro.ProcessOutcome = ProcessOutcome.AdditionalParametersJsonNonParsable
                 Else
                     Dim requestBody As String = JsonConvert.SerializeObject(License, mappingSettings) ' converts Porperty names to db names in json
                     requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status enum int with text (required by db)
+                    If AdditionalParametersJson IsNot Nothing Then
+                        requestBody = StringOp.JsonMerge(requestBody, AdditionalParametersJson, _jsonMergeSettings)
+                    End If
                     wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _licenseEndpointsMap(RequestType)), HttpMethod.Post, requestBody)
                     lro = ProcessLicenseWebClientResponse(wcr)
                 End If
@@ -254,7 +280,15 @@ Public Class LicenseManagerApiInterface
 
     End Function
 
-    Public Function GeneratorRequest(requestType As GeneratorRequestType, Optional generatorID As String = Nothing, Optional generator As Generator = Nothing) As GeneratorRequestOutcome
+    ''' <summary>
+    ''' This makes Generator Requests of the API. Depending on the Request type, you will need to provide different parameters. Null properties are ignored in Update.
+    ''' </summary>
+    ''' <param name="requestType">The type of Generator Request you wish to make</param>
+    ''' <param name="generatorID">The GeneratorID of the Generator (required for Retrieve and Update)</param>
+    ''' <param name="generator">A Generator object used in Update and Create</param>
+    ''' <param name="AdditionalParametersJson">Any additional parameters to add to the json request body in Json format</param>
+    Public Function GeneratorRequest(requestType As GeneratorRequestType, Optional generatorID As String = Nothing,
+                                         Optional generator As Generator = Nothing, Optional AdditionalParametersJson As String = Nothing) As GeneratorRequestOutcome
 
         Dim wcp As New WebClientProcessor(_consumerKey, _consumerSecret)
         wcp.WebClientTimeout = WebClientTimeout
@@ -265,6 +299,8 @@ Public Class LicenseManagerApiInterface
         Dim mappingSettings = New JsonSerializerSettings With {
                             .NullValueHandling = NullValueHandling.Ignore,
                             .ContractResolver = New DynamicMappingResolver(_generatorPropertyToDatabaseMap)}
+
+
 
         Select Case requestType
 
@@ -299,9 +335,14 @@ Public Class LicenseManagerApiInterface
                     gro.ProcessOutcome = ProcessOutcome.GeneratorIdNotPassedError
                 ElseIf generator Is Nothing Then
                     gro.ProcessOutcome = ProcessOutcome.GeneratorObjectRequiredError
+                ElseIf AdditionalParametersJson IsNot Nothing AndAlso Not StringOp.JsonIsParsable(AdditionalParametersJson) Then
+                    gro.ProcessOutcome = ProcessOutcome.AdditionalParametersJsonNonParsable
+
                 Else
                     Dim requestBody As String = JsonConvert.SerializeObject(generator, mappingSettings) ' converts Property names to db names in json
-                    ' requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status Enum int With text (required by db)
+                    If AdditionalParametersJson IsNot Nothing Then
+                        requestBody = StringOp.JsonMerge(requestBody, AdditionalParametersJson, _jsonMergeSettings)
+                    End If
                     wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _generatorEndpointsMap(requestType), generatorID), HttpMethod.Put, requestBody)
                     gro = ProcessGeneratorWebClientResponse(wcr)
                 End If
@@ -309,9 +350,13 @@ Public Class LicenseManagerApiInterface
             Case GeneratorRequestType.Create ' requires License
                 If generatorID Is Nothing Then
                     gro.ProcessOutcome = ProcessOutcome.GeneratorObjectRequiredError
+                ElseIf AdditionalParametersJson IsNot Nothing AndAlso Not StringOp.JsonIsParsable(AdditionalParametersJson) Then
+                    gro.ProcessOutcome = ProcessOutcome.AdditionalParametersJsonNonParsable
                 Else
                     Dim requestBody As String = JsonConvert.SerializeObject(generator, mappingSettings) ' converts Property names to db names in json
-                    ' requestBody = StringOp.JsonReplaceKeyValue(requestBody, "status", _licenseStatusMap.ToDictionary(Function(x) x.Key.ToString, Function(y) y.Value)) ' replaces Status enum int with text (required by db)
+                    If AdditionalParametersJson IsNot Nothing Then
+                        requestBody = StringOp.JsonMerge(requestBody, AdditionalParametersJson, _jsonMergeSettings)
+                    End If
                     wcr = wcp.HttpAction(StringOp.UrlCombine(_baseSiteURL, _generatorEndpointsMap(requestType)), HttpMethod.Post, requestBody)
                     gro = ProcessGeneratorWebClientResponse(wcr)
                 End If
@@ -346,10 +391,6 @@ Public Class LicenseManagerApiInterface
         Return gro
 
     End Function
-
-
-
-
 
     Private Class LicenseResponseSingle
 
