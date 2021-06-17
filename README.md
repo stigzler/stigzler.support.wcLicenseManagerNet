@@ -1,6 +1,6 @@
 # wcLicenseManagerNet
 
-### a .net Library for the *License Manager for Woo Commerce* Plugin
+### a .Net Standard 2.0 Library for the *License Manager for Woo Commerce* Plugin
 
 # Overview
 wcLicenseManagerNet is a .Net Standard library designed for use with the Wordpress/WooCommerce plugin [LicenseManager](https://wordpress.org/plugins/license-manager-for-woocommerce/). It interfaces with the plugin's API via one main method:
