@@ -1,8 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>stigzler.support.wcLicenseManagerNet</RootNamespace>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>wcLicenseManagerNet is a .Net Standard library designed for use with the WooCommerce LicenseManager plugin. It interfaces with the plugin's API and allows you to integrate its functions into your .net applications.</Description>
+    <PackageProjectUrl>https://github.com/stigzler/stigzler.support.wcLicenseManagerNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/stigzler/stigzler.support.wcLicenseManagerNet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>License,Licence,API,Wordpress,Woocommerce</PackageTags>
+    <PackageReleaseNotes>Changed .net standard framework to 2.0</PackageReleaseNotes>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

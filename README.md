@@ -30,6 +30,10 @@ C# code [HERE](#C-Sharp-Code)
 ' API CONNECT (URL, ConsumerKey, Consumer Secret)
 Dim apiInterface As New LicenseManagerApiInterface("https://mysite.com", "ck_e267ba742205938e986ab56ae6f145fe609", "cs_3d9e4eb833397ab67fd987d76ed5d89cc")
 
+' LIST ALL LICENSES
+Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseRequestType.List)
+Console.WriteLine(String.Join(vbCr, apiRequest.Licences))
+
 ' ACTIVATE LICENSE
 apiInterface.LicenseRequest(LicenseRequestType.Activate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE")
 
@@ -38,11 +42,7 @@ apiInterface.LicenseRequest(LicenseRequestType.Deactivate, "OGZL-8DYMW-54PWP-THT
 
 ' CHECK LICENCE KEY VALID
 ' Display True or False for Key validity
-If apiInterface.LicenseRequest(LicenseRequestType.Validate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE").APIReturnedSuccess Then Debug.WriteLine("Valid")
-
-' LIST ALL LICENSES
-Dim apiRequest As LicenseRequestOutcome = apiInterface.LicenseRequest(LicenseRequestType.List)
-Debug.WriteLine(String.Join(vbCr, apiRequest.Licences))
+If apiInterface.LicenseRequest(LicenseRequestType.Validate, "OGZL-8DYMW-54PWP-THT76-7DG1Z-S2XXE").APIReturnedSuccess Then Console.WriteLine("Valid")
 ```
 
 # Full Use Case Example
@@ -137,6 +137,8 @@ apiInterface.LicenseRequest(LicenseRequestType.Create, "A7B4D-44C32-D333F", newL
 Additionally, you can change the json.net settings used during this merge, by altering the `JsonMergeSettings` property of the `LicenseManagerApiInterface` instance
 
 # Links
+[NuGet Page](https://www.nuget.org/packages/stigzler.support.wcLicenseManagerNet/)
+
 [Plugin WP Homepage](https://wordpress.org/plugins/license-manager-for-woocommerce/)
 
 [Plugin Homepage + Docs](https://www.licensemanager.at/)
