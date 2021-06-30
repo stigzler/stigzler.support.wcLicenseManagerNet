@@ -20,7 +20,7 @@ This returns the object `LicenseRequestOutcome` which contains various propertie
 It also leverages two data object types, `License` and `Generator` which hold the respective details retrieved from the API and also are used in any Create or Update requests.
 
 # Download
-It can be installed from NuGet via the usual means or downloaded and compiled from here. If you use nuget, it might also be advisable to download this Visual Studio Solution to use the [Test Application](#Test-Application) to experiment with the API.
+It can be installed from [NuGet](https://www.nuget.org/packages/stigzler.support.wcLicenseManagerNet/) via the usual means or downloaded and compiled from here. If you use nuget, it might also be advisable to download this Visual Studio Solution to use the [Test Application](#Test-Application) to experiment with the API.
 
 # Getting Started - Code Examples
 
